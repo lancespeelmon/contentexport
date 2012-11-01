@@ -6,7 +6,7 @@ require 'net/http'
 require 'net/https'
 require 'json'
 
-class TestUser 
+class LibraryExtractor
 
   def handleSakaiDoc(result)
     puts "I'm a doc!"
@@ -24,7 +24,7 @@ class TestUser
     puts "I'm a link!"
   end
 
-  def readUser(user, items, password)
+  def extract(user, items, password)
     uri = URI("https://cole.uconline.edu/var/search/pool/auth-all.json?userid=#{user}&sortOn=_lastModified&sortOrder=desc&q=*&page=0&items=#{items}");
     response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       request = Net::HTTP::Get.new uri.request_uri
@@ -55,6 +55,6 @@ class TestUser
 end
 
 if __FILE__ == $0
-  user = TestUser.new()
-  user.readUser('kdalex@ucdavis.edu', 500, ARGV[0])
+  extractor = LibraryExtractor.new()
+  extractor.extract('kdalex@ucdavis.edu', 500, ARGV[0])
 end
